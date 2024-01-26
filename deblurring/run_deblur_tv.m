@@ -40,8 +40,14 @@
 %}
 %  ===================================================================
 %% Create array with test images names
+
 clear all;clc;
-testImg=dir('images');
+
+addpath("../../SALSA_v2.0/src/")
+addpath("../../SALSA_v2.0/utils/")
+addpath("../utils/")
+
+testImg=dir('../images/');
 testImg={testImg(3:end).name};
 %Check that test images are accesible
 if sum(size(testImg)) == 0
@@ -77,7 +83,7 @@ op.gammaFrac=0.98; % we set gamma=op.gammaFrac*gamma_max
 
 randn('state',1); % Set rnd generators (for repeatability)
 %% RUN EXPERIMENTS
-for i_im = 1:length(testImg)
+for i_im = 1:1%length(testImg)
     for bsnr=[30]
         fprintf('SNR=%d\n',bsnr); op.BSNRdb=bsnr;
         filename=testImg{i_im};
@@ -191,13 +197,13 @@ for i_im = 1:length(testImg)
                 % Save images of logpitrace
                 figLogPiTraceWarmUp=figure;
                 plot(results.logPiTrace_WU(2:end),'b','LineWidth',1.5,'MarkerSize',8);   hold on;
-                title('\propto log p(X^n|y,\theta) during warm-up');xlabel('Iteration (n)');grid on; hold off;
+                title('$\propto log p(X^n|y,\theta)$ during warm-up');xlabel('Iteration (n)');grid on; hold off;
                 saveas(figLogPiTraceWarmUp,['./' dirname '/' subdirname '/' name '_logPiTraceX_warmup.png' ]);
             end
             
             figLogPiTrace=figure;
             plot(results.logPiTraceX(2:end),'r','LineWidth',1.5,'MarkerSize',8); hold on;
-            title('\propto log p(X^n|y,\theta) in SAPG algorithm');xlabel('Iteration (n)');grid on;hold off;
+            title('$\propto log p(X^n|y,\theta)$ in SAPG algorithm');xlabel('Iteration (n)');grid on;hold off;
             saveas(figLogPiTrace,['./' dirname '/' subdirname '/' name '_logPiTraceX.png' ]);
         end
         if save_gx_plot
@@ -209,7 +215,7 @@ for i_im = 1:length(testImg)
         end
         figTheta=figure;
         plot(results.thetas(1:results.last_samp),'b','LineWidth',1.5,'MarkerSize',8);
-        xlim([1 inf]); grid on; xlabel('Iteration (n)');ylabel('\theta_n');title('\theta_n')
+        xlim([1 inf]); grid on; xlabel('Iteration (n)');ylabel('$\theta_n$');title('$\theta_n$')
         saveas(figTheta,['./' dirname '/' subdirname '/' name '_thetas.png' ]);
         close all;
     end
